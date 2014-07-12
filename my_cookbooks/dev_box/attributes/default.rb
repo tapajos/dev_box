@@ -1,0 +1,6 @@
+default[:apps][:base_path] = '/home/vagrant/projects'
+default[:ark][:prefix_root] = '/usr/local/src'
+default[:dotfiles][:path] = '/home/vagrant/dotfiles'
+default[:dotfiles][:git_repository] = 'git@github.com:tapajos/dotfiles.git'
+default[:dotfiles][:git_branch] = 'master'
+default[:dotfiles][:script] = 'bootstrap.sh'

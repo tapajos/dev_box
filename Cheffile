@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+site 'https://supermarket.getchef.com/api/v1'
+site "http://community.opscode.com/api/v1"
+
+cookbook 'apt'
+cookbook 'git'
+cookbook 'nginx'
+cookbook 'application_nginx'
+cookbook 'ssh_known_hosts'
