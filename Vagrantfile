@@ -52,21 +52,6 @@ module DevBox
     def vm_cpu_count
       @vm_cpu_count ||= [ideal_vm_cpus, min_vm_cpus].max
     end
-
-    def ssh_private_key_files
-      @ssh_private_key_files ||= begin
-        home_dir = ENV['HOME']
-        ssh_dir = File.join(home_dir, '.ssh')
-        rsa_path = File.join(ssh_dir, 'id_rsa')
-        dsa_path = File.join(ssh_dir, 'id_dsa')
-        vagrant_path = File.join(home_dir, '.vagrant.d',
-                                 'insecure_private_key')
-        [ENV['VAGRANT_SSH_PRIVATE_KEY_PATH'].to_s,
-                rsa_path,
-                dsa_path,
-                vagrant_path].select { |f| File.exist?(f) }
-      end
-    end
   end
 end
 
@@ -74,17 +59,13 @@ end
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "hashicorp/precise64"
+  config.vm.box = "ubuntu/trusty64"
 
-  config.vm.network "forwarded_port", guest: 22, host: 2223
   config.vm.network "forwarded_port", guest: 3306, host: 3306
-  config.vm.network "forwarded_port", guest: 80, host: 8080
-  # For https projects
-  # config.vm.network "forwarded_port", guest: 443, host: 8443
 
   config.ssh.forward_agent = true
 
-  config.vm.synced_folder "projects", "/home/vagrant/projects"
+  config.vm.synced_folder "../", "/home/vagrant/projects"
 
   config.vm.provider 'vmware_fusion' do |v|
     v.vmx['memsize'] = DevBox::VMResources.vm_memory

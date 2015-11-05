@@ -1,17 +1,23 @@
 if defined?(ChefSpec)
-  ChefSpec::Runner.define_runner_method :windows_package
-  ChefSpec::Runner.define_runner_method :windows_feature
-  ChefSpec::Runner.define_runner_method :windows_task
-  ChefSpec::Runner.define_runner_method :windows_path
-  ChefSpec::Runner.define_runner_method :windows_batch
-  ChefSpec::Runner.define_runner_method :windows_pagefile
-  ChefSpec::Runner.define_runner_method :windows_zipfile
-  ChefSpec::Runner.define_runner_method :windows_shortcut
-  ChefSpec::Runner.define_runner_method :windows_auto_run
-  ChefSpec::Runner.define_runner_method :windows_printer
-  ChefSpec::Runner.define_runner_method :windows_printer_port
-  ChefSpec::Runner.define_runner_method :windows_reboot
+  chefspec_version = Gem.loaded_specs['chefspec'].version
+  if chefspec_version < Gem::Version.new('4.1.0')
+    define_method = ChefSpec::Runner.method(:define_runner_method)
+  else
+    define_method = ChefSpec.method(:define_matcher)
+  end
 
+  define_method.call :windows_package
+  define_method.call :windows_feature
+  define_method.call :windows_task
+  define_method.call :windows_path
+  define_method.call :windows_batch
+  define_method.call :windows_pagefile
+  define_method.call :windows_zipfile
+  define_method.call :windows_shortcut
+  define_method.call :windows_auto_run
+  define_method.call :windows_printer
+  define_method.call :windows_printer_port
+  define_method.call :windows_reboot
   #
   # Assert that a +windows_package+ resource exists in the Chef run with the
   # action +:install+. Given a Chef Recipe that installs "Node.js" as a
@@ -68,8 +74,6 @@ if defined?(ChefSpec)
   def remove_windows_package(resource_name)
     ChefSpec::Matchers::ResourceMatcher.new(:windows_package, :remove, resource_name)
   end
-
-
 
   #
   # Assert that a +windows_feature+ resource exists in the Chef run with the
@@ -148,8 +152,6 @@ if defined?(ChefSpec)
   def delete_windows_feature(resource_name)
     ChefSpec::Matchers::ResourceMatcher.new(:windows_feature, :delete, resource_name)
   end
-
-
 
   #
   # Assert that a +windows_task+ resource exists in the Chef run with the
@@ -252,8 +254,6 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:windows_task, :change, resource_name)
   end
 
-
-
   #
   # Assert that a +windows_path+ resource exists in the Chef run with the
   # action +:add+. Given a Chef Recipe that adds "C:\7-Zip" to the Windows
@@ -304,8 +304,6 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:windows_path, :remove, resource_name)
   end
 
-
-
   #
   # Assert that a +windows_batch+ resource exists in the Chef run with the
   # action +:run+. Given a Chef Recipe that runs a batch script
@@ -334,8 +332,6 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:windows_batch, :run, resource_name)
   end
 
-
-
   #
   # Assert that a +windows_pagefile+ resource exists in the Chef run with the
   # action +:set+. Given a Chef Recipe that sets a pagefile
@@ -362,8 +358,6 @@ if defined?(ChefSpec)
   def set_windows_pagefile(resource_name)
     ChefSpec::Matchers::ResourceMatcher.new(:windows_pagefile, :set, resource_name)
   end
-
-
 
   #
   # Assert that a +windows_zipfile+ resource exists in the Chef run with the
@@ -417,7 +411,6 @@ if defined?(ChefSpec)
   def zip_windows_zipfile_to(resource_name)
     ChefSpec::Matchers::ResourceMatcher.new(:windows_zipfile, :zip, resource_name)
   end
-
 
   # All the other less commonly used LWRPs
   def create_windows_shortcut(resource_name)

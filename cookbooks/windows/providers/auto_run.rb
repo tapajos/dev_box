@@ -1,5 +1,5 @@
 #
-# Author:: Paul Morotn (<pmorton@biaprotect.com>)
+# Author:: Paul Morton (<pmorton@biaprotect.com>)
 # Cookbook Name:: windows
 # Provider:: auto_run
 #
@@ -25,7 +25,7 @@ action :create do
   end
 end
 
-action :remove do 
+action :remove do
   windows_registry 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' do
     values new_resource.name => ''
     action :remove

@@ -5,11 +5,14 @@ apt_repository 'ruby-nando' do
   key          'http://apt.hellobits.com/hellobits.key'
 end
 
-package 'ruby-2.1'
+package "ruby" do
+  action :remove
+end
+
+package 'ruby-2.2'
 package 'libxslt-dev'
 package 'libxml2-dev'
-package 'graphicsmagick-libmagick-dev-compat'
-package 'libmagickwand-dev'
+package 'imagemagick'
 
 cookbook_file 'ruby.sh' do
   owner 'root'

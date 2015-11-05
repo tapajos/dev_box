@@ -1,5 +1,8 @@
 yum Cookbook
 ============
+[![Build Status](https://travis-ci.org/chef-cookbooks/yum.svg?branch=master)](http://travis-ci.org/chef-cookbooks/yum)
+[![Cookbook Version](https://img.shields.io/cookbook/v/yum.svg)](https://supermarket.chef.io/cookbooks/yum)
+[![Code Climate](https://codeclimate.com/github/chef-cookbooks/yum/badges/gpa.svg)](https://codeclimate.com/github/chef-cookbooks/yum)
 
 The Yum cookbook exposes the `yum_globalconfig` and `yum_repository`
 resources that allows a user to both control global behavior and make
@@ -19,9 +22,15 @@ until all dependent cookbooks have been ported.
 
 Requirements
 ------------
-* Chef 11 or higher
-* Ruby 1.9 (preferably from the Chef full-stack installer)
-* RHEL5, RHEL6, or other platforms within the family
+#### Platforms
+* RHEL/CentOS and derivatives
+* Fedora
+
+#### Chef
+* Chef 11+
+
+#### Cookbooks
+* none
 
 Resources/Providers
 -------------------
@@ -60,6 +69,7 @@ end
 #### Actions
 - `:create` - creates a repository file and builds the repository listing
 - `:delete` - deletes the repository file
+- `:makecache` - update yum cache
 
 #### Parameters
 * `baseurl` -  Must be a URL to the directory where the yum repository's
@@ -68,6 +78,8 @@ end
 * `cost` - relative cost of accessing this repository. Useful for
   weighing one repo's packages as greater/less than any other.
   defaults to 1000
+* `clean_metadata` - Run "yum clean metadata <reponame>" during
+  repository creation. defaults to true.
 * `description` - Maps to the 'name' parameter in a repository .conf.
   Descriptive name for the repository channel. This directive must be
   specified.
@@ -98,6 +110,8 @@ end
   an empty list.
 * `keepalive` - Either `true` or `false`. This tells yum whether or not
   HTTP/1.1 keepalive should be used with this repository.  
+* `make_cache` - Optional, Default is `true`, if `false` then `yum -q makecache` will not
+  be ran
 * `max_retries` - Set the number of times any attempt to retrieve a file
   should retry before returning an error. Setting this to '0' makes
   yum try forever. Default is '10'.
@@ -126,6 +140,10 @@ end
   find that yum is not downloading the mirrorlists as often as you
   would like lower the value of this option.
 * `mirrorlist_expire` - alias for mirror_expire
+* `mode` - Permissions mode of .repo file on disk. Useful for
+  scenarios where secrets are in the repo file. If set to '600',
+  normal users will not be able to use yum search, yum info, etc.
+  Defaults to '0644'  
 * `priority` - When the yum-priorities plug-in is enabled, you set
   priorities on repository entries, where N is an integer from 1 to 99. The
   default priority for repositories is 99.
@@ -178,7 +196,7 @@ http://linux.die.net/man/5/yum.conf
   files. The default is '/var/cache/yum'.  
 * `keepcache` - Either `true` or `false`. Determines whether or not
   yum keeps the cache of headers and packages after successful
-  installation. Default is `true` (keep files)
+  installation. Default is `false`
 * `debuglevel` - Debug message output level. Practical range is 0-10.
   Default is '2'.  
 * `exclude` - List of packages to exclude from updates or installs.
@@ -246,13 +264,13 @@ yum_repository resource.
 License & Authors
 -----------------
 - Author:: Eric G. Wolfe
-- Author:: Matt Ray (<matt@getchef.com>)
-- Author:: Joshua Timberman (<joshua@getchef.com>)
-- Author:: Sean OMeara (<someara@getchef.com>)
+- Author:: Matt Ray (<matt@chef.io>)
+- Author:: Joshua Timberman (<joshua@chef.io>)
+- Author:: Sean OMeara (<someara@chef.io>)
 
 ```text
 Copyright:: 2011 Eric G. Wolfe
-Copyright:: 2013 Chef
+Copyright:: 2013-2014 Chef Software, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
