@@ -58,10 +58,12 @@ end
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
+MYSQL_PORT = 3306
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
 
-  config.vm.network "forwarded_port", guest: 3306, host: 3306
+  config.vm.network "forwarded_port", guest: MYSQL_PORT, host: MYSQL_PORT
 
   config.ssh.forward_agent = true
 
@@ -82,7 +84,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :chef_solo do |chef|
     chef.formatter = 'doc'
     chef.roles_path = %w(roles)
-    chef.cookbooks_path = %w(cookbooks my_cookbooks)
+    chef.cookbooks_path = %w(cookbooks my_cookbooks cloned_cookbooks)
     chef.add_role("dev_box")
   end
 end

@@ -12,6 +12,7 @@ package 'bash-completion'
 package 'vim'
 
 include_recipe 'git'
+include_recipe 'dev_box::postgresql'
 include_recipe 'dev_box::mysql'
 include_recipe 'dev_box::ruby'
 include_recipe 'dev_box::redis'

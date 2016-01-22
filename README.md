@@ -8,6 +8,7 @@ My development box.
 * MySQL
 * Memcached
 * Redis
+* Erlang and Elixir
 * My dot files repo
 
 ## Dependencies
@@ -22,4 +23,4 @@ My development box.
 
 ## Customizations
 
-You can make some changes in the [attributes file](https://github.com/tapajos/dev_box/blob/master/my_cookbooks/dev_box/attributes/default.rb).
+See [attributes file](https://github.com/tapajos/dev_box/blob/master/my_cookbooks/dev_box/attributes/default.rb).
